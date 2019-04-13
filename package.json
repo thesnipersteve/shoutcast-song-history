@@ -1,0 +1,31 @@
+{
+  "name": "shoutcast-song-history",
+  "version": "1.0.0",
+  "description": "Fetches the song history as an array of song objects from shoutcast's song history page.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thesnipersteve/shoutcast-song-history.git"
+  },
+  "keywords": [
+    "shoutcast",
+    "node",
+    "song",
+    "history",
+    "now-playing"
+  ],
+  "author": "Stephen Elmendorf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thesnipersteve/shoutcast-song-history/issues"
+  },
+  "homepage": "https://github.com/thesnipersteve/shoutcast-song-history#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "html-to-json": "^0.6.0",
+    "moment": "^2.24.0"
+  }
+}
