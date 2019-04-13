@@ -3,9 +3,7 @@ const htmlToJson = require('html-to-json');
 const moment = require('moment');
 const util = require('util');
 
-module.exports = async function getSongHistory(playHistoryUrl){
-
-    console.log(`Fetching song history from: ${playHistoryUrl}`);
+module.exports = async function getSongHistory(playHistoryUrl) {
 
     let songList = [];
     let response = await axios.get(playHistoryUrl);
@@ -38,7 +36,7 @@ module.exports = async function getSongHistory(playHistoryUrl){
         addSongToList(i, newArray, songList, nowTimeString, todayDateString, yesterdayDateString);
     }
 
-    console.log(`Returning song list: ${util.inspect(songList)}`);
+    return songList;
 };
 
 const addSongToList = (songNumber, stringArray, songList, nowTimeString, todayDateString, yesterdayDateString) => {
