@@ -1,7 +1,6 @@
 const axios = require('axios');
 const htmlToJson = require('html-to-json');
 const moment = require('moment');
-const util = require('util');
 
 module.exports = async function getSongHistory(playHistoryUrl) {
 
@@ -15,20 +14,20 @@ module.exports = async function getSongHistory(playHistoryUrl) {
         });
     });
 
-    // Remove the 'current song'
+    // Remove the text string of 'current song'
     let newArray = filtered.filter(function(value, index, arr) {
         if(value != "Current Song") {
             return value;
         }
     });
 
-    // Remove the leading items
+    // Remove the leading table cells that do not contain song information
     newArray = newArray.splice(5);
   
     // Get the date strings for yesterday and today
     let now = new Date();
     let nowTimeString = moment(now).format("HH:mm:ss");
-    let yesterdayDateString = moment(now).subtract(-1, 'day').format("YYYY-MM-DD");
+    let yesterdayDateString = moment(now).subtract(1, 'days').format("YYYY-MM-DD");
     let todayDateString = moment(now).format("YYYY-MM-DD");
 
     // Create a song object and push it into the song list
@@ -40,9 +39,12 @@ module.exports = async function getSongHistory(playHistoryUrl) {
 };
 
 const addSongToList = (songNumber, stringArray, songList, nowTimeString, todayDateString, yesterdayDateString) => {
+    
+    // `indexOffset` is the index of the timestamp
+    // `indexOffset + 1` is the index of the full song name with album
     let indexOffset = songNumber * 2;
 
-    // Make sure there are actually elements present
+    // Ensure elements are present
     if(stringArray.length > indexOffset) {
         let playDate = null;
 
@@ -57,7 +59,7 @@ const addSongToList = (songNumber, stringArray, songList, nowTimeString, todayDa
         let songTitleSplit = fullSongTitle.split(" by ");
         let title, album = "";
         
-        // if it's not in standard `Title by Album` format, we can ignore it
+        // If it's not in standard `Title by Album` format, we can ignore it
         if(songTitleSplit.length < 2){
             return;
         }
@@ -65,7 +67,7 @@ const addSongToList = (songNumber, stringArray, songList, nowTimeString, todayDa
         album = songTitleSplit[1];
 
         // Create a timestamp that will be stored with the song entry
-        let timeStamp = moment(`${playDate} ${stringArray[indexOffset]}`).utc().toISOString();
+        let timeStamp = moment(`${playDate}T${stringArray[indexOffset]}`).utc().toISOString();
                
         // Create the song object for this offset
         let song = {
